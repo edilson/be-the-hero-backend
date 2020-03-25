@@ -16,7 +16,7 @@ module.exports = {
             uf
         })
     
-        return response.json({ id })
+        return response.status(201).json({ id })
     },
 
     async list (request, response) {
