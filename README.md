@@ -33,3 +33,8 @@ To run this project locally follow these steps:
 ```
     http://localhost:3333
 ```
+
+5 - Run tests:  
+```
+    npm test
+```
