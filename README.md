@@ -24,12 +24,17 @@ To run this project locally follow these steps:
     npm install
 ```
 
-3 - Run the app:  
+3 - Run the migrations:  
+```
+    npx knex migrate:latest
+```
+
+4 - Run the app:  
 ```
     npm start
 ```
 
-4 - Go to:  
+5 - Go to:  
 ```
     http://localhost:3333
 ```

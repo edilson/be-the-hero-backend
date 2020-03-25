@@ -46,7 +46,7 @@ describe('Incidents', () => {
             description,
             value
         });
-    })
+    });
 
     after(() => {
         connection('ong').where('id', id).delete();
@@ -63,6 +63,7 @@ describe('Incidents', () => {
                 expect(response.status).to.equal(200);
                 expect(response.body).to.be.a('array');
                 expect(response.body[0]).have.property('ong_id');
+                expect(response.headers).have.property('x-total-count');
                 done();
             });
         });
@@ -111,6 +112,20 @@ describe('Incidents', () => {
                                     expect(response.status).to.equal(204);
                                     done();
                                 });
+                        });
+                });
+        });
+
+        it('Test delete incident without setting authorization header', (done) => {
+            chai.request('http://localhost:3333')
+                .get('/incidents')
+                .end((request, response) => {
+                    chai.request('http://localhost:3333')
+                        .delete(`/incidents/${response.body[1].id}`)
+                        .end((request, response) => {
+                            expect(response.status).to.equal(401);
+                            expect(response.body.error).to.equal('Unallowed operation');
+                            done();
                         });
                 });
         });
