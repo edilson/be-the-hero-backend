@@ -11,7 +11,7 @@ chai.use(chaiHttp);
 describe('Incidents', () => {
     const id = crypto.randomBytes(4).toString('HEX');
 
-    before(() => {
+    beforeEach(() => {
         let ong = {
             name: "ong-test",
             email: "test@test.com",
@@ -32,50 +32,44 @@ describe('Incidents', () => {
         });
     });
 
-    beforeEach(() => {
-        let incident = {
-            title: "incident-test",
-            description: "some description",
-            value: 150.05
-        };
+    let incident_post = {
+        title: "incident-test",
+        description: "some description",
+        value: 150.05
+    };
 
-        let { title, description, value } = incident;
-
-        connection('incident').insert({
-            title,
-            description,
-            value
-        });
-    });
-
-    after(() => {
+    afterEach(() => {
         connection('ong').where('id', id).delete();
         console.log('Deleting ong test instance');
-        connection('incident').delete();
+        connection('incident').where('ong_id', id).delete();
         console.log('Deleting incidents test instances');
     });
 
     describe('List incidents', () => {
         it('Testing list incidents', (done) => {
             chai.request('http://localhost:3333')
-            .get('/incidents')
-            .end((request, response) => {
-                expect(response.status).to.equal(200);
-                expect(response.body).to.be.a('array');
-                expect(response.body[0]).have.property('ong_id');
-                expect(response.headers).have.property('x-total-count');
-                done();
-            });
+                .get('/ongs')
+                .end((request, response) => {
+                    chai.request('http://localhost:3333')
+                        .post('/incidents')
+                        .set('Authorization', response.body[0].id)
+                        .send(incident_post)
+                        .end((request, response) => {
+                            chai.request('http://localhost:3333')
+                                .get('/incidents')
+                                .end((request, response) => {
+                                    expect(response.status).to.equal(200);
+                                    expect(response.body).to.be.a('array');
+                                    expect(response.body[0]).have.property('ong_id');
+                                    expect(response.headers).have.property('x-total-count');
+                                    done();
+                                });
+                        });
+                });
         });
     });
 
     describe('Create incident', () => {
-        let incident_post = {
-            title: "incident-test",
-            description: "some description",
-            value: 150.05
-        };
-
         it('Test incident creation', (done) => {
             chai.request('http://localhost:3333')
                 .get('/ongs')
@@ -121,7 +115,7 @@ describe('Incidents', () => {
                 .get('/incidents')
                 .end((request, response) => {
                     chai.request('http://localhost:3333')
-                        .delete(`/incidents/${response.body[1].id}`)
+                        .delete(`/incidents/${response.body[0].id}`)
                         .end((request, response) => {
                             expect(response.status).to.equal(401);
                             expect(response.body.error).to.equal('Unallowed operation');

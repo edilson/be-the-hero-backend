@@ -48,10 +48,10 @@ describe('Profile', () => {
         });
     });
 
-    after(() => {
+    afterEach(() => {
         connection('ong').where('id', id).delete();
         console.log('Deleting ong test instance');
-        connection('incident').delete();
+        connection('incident').where('ong_id', id).delete();
         console.log('Deleting incidents test instances');
     });
 
