@@ -11,7 +11,9 @@ chai.use(chaiHttp);
 describe('Incidents', () => {
     const id = crypto.randomBytes(4).toString('HEX');
 
-    beforeEach(() => {
+    beforeEach(async () => {
+        await connection.migrate.latest();
+
         let ong = {
             name: "ong-test",
             email: "test@test.com",
@@ -32,18 +34,18 @@ describe('Incidents', () => {
         });
     });
 
+    afterEach(async () => {
+        await connection('ong').where('id', id).delete();
+        console.log('Deleting ong test instance');
+        await connection('incident').where('ong_id', id).delete();
+        console.log('Deleting incidents test instances');
+    });
+
     let incident_post = {
         title: "incident-test",
         description: "some description",
         value: 150.05
     };
-
-    afterEach(() => {
-        connection('ong').where('id', id).delete();
-        console.log('Deleting ong test instance');
-        connection('incident').where('ong_id', id).delete();
-        console.log('Deleting incidents test instances');
-    });
 
     describe('List incidents', () => {
         it('Testing list incidents', (done) => {

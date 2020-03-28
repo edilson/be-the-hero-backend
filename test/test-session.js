@@ -11,7 +11,9 @@ chai.use(chaiHttp);
 describe('Session', () => {
     const id = crypto.randomBytes(4).toString('HEX');
 
-    before(() => {
+    before(async () => {
+        await connection.migrate.latest();
+
         let ong = {
             name: "ong-test",
             email: "test@test.com",
