@@ -24,7 +24,7 @@ describe('Incidents', () => {
 
         let { name, email, whatsapp, city, uf } = ong;
 
-        connection('ong').insert({
+        await connection('ong').insert({
             id,
             name,
             email,
@@ -37,8 +37,6 @@ describe('Incidents', () => {
     afterEach(async () => {
         await connection('ong').where('id', id).delete();
         console.log('Deleting ong test instance');
-        await connection('incident').where('ong_id', id).delete();
-        console.log('Deleting incidents test instances');
     });
 
     let incident_post = {
