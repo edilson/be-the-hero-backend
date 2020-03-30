@@ -50,13 +50,14 @@ describe('Session', () => {
                 });
         });
 
-        it('Testing session creation without providing the ID', () => {
+        it('Testing session creation without providing the ID', (done) => {
             chai.request('http://localhost:3333')
                 .post('/sessions')
                 .send({ id: "" })
                 .end((request, response) => {
                     expect(response.status).to.equal(400);
                     expect(response.body.error).to.equal('No ONG found with the provided ID.');
+                    done();
                 });
         });
     });
