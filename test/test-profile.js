@@ -5,14 +5,15 @@ const crypto = require('crypto');
 
 const connection = require('../src/database/connection');
 const server = require('../server');
+const generateUniqueId = require('../src/utils/generateUniqueId');
 
 chai.use(chaiHttp);
 
 describe('Profile', () => {
-    const id = crypto.randomBytes(4).toString('HEX');
 
-    before(async () => {
+    beforeEach(async () => {
         await connection.migrate.latest();
+        const id = generateUniqueId();
 
         let ong = {
             name: "ong-test",
@@ -24,7 +25,7 @@ describe('Profile', () => {
 
         let { name, email, whatsapp, city, uf } = ong;
 
-        connection('ong').insert({
+        await connection('ong').insert({
             id,
             name,
             email,
@@ -32,42 +33,43 @@ describe('Profile', () => {
             city,
             uf
         });
-    });
 
-    beforeEach(() => {
         let incident = {
-            title: "incident-test",
+            title: "test-title",
             description: "some description",
-            value: 150.05
-        };
+            value: 120,
+            ong_id: id
+        }
 
-        let { title, description, value } = incident;
+        let { title, description, value, ong_id } = incident;
 
-        connection('incident').insert({
+        await connection('incident').insert({
             title,
             description,
-            value
+            value,
+            ong_id
         });
     });
 
     afterEach(async () => {
-        await connection('ong').where('id', id).delete();
-        console.log('Deleting ong test instance');
-        await connection('incident').where('ong_id', id).delete();
-        console.log('Deleting incidents test instances');
+        await connection.migrate.rollback();
     });
 
     describe('List profile', () => {
         it('Testing list profile', (done) => {
+            let retrievedOngId;
+
             chai.request('http://localhost:3333')
                 .get('/ongs')
                 .end((request, response) => {
+                    retrievedOngId = response.body[0].id;
                     chai.request('http://localhost:3333')
                         .get('/profile')
-                        .set('Authorization', response.body[0].id)
+                        .set('Authorization', retrievedOngId)
                         .end((request, response) => {
                             expect(response.status).to.equal(200);
                             expect(response.body).to.be.a('array');
+                            expect(response.body[0].ong_id).to.equal(retrievedOngId)
                             done();
                         });
                 });

@@ -5,14 +5,14 @@ const crypto = require('crypto');
 
 const connection = require('../src/database/connection');
 const server = require('../server');
+const generateUniqueId = require('../src/utils/generateUniqueId');
 
 chai.use(chaiHttp);
 
 describe('Session', () => {
-    const id = crypto.randomBytes(4).toString('HEX');
-
-    before(async () => {
+    beforeEach(async () => {
         await connection.migrate.latest();
+        const id = generateUniqueId();
 
         let ong = {
             name: "ong-test",
@@ -24,7 +24,7 @@ describe('Session', () => {
 
         let { name, email, whatsapp, city, uf } = ong;
 
-        connection('ong').insert({
+        await connection('ong').insert({
             id,
             name,
             email,

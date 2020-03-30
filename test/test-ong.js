@@ -1,18 +1,17 @@
 const chai = require('chai');
 const chaiHttp = require('chai-http');
 const expect = require('chai').expect;
-const crypto = require('crypto');
 
 const connection = require('../src/database/connection');
 const server = require('../server');
+const generateUniqueId = require('../src/utils/generateUniqueId');
 
 chai.use(chaiHttp);
 
 describe('ONGs', () => {
-    const id = crypto.randomBytes(4).toString('HEX');
-
     beforeEach(async () => {
         await connection.migrate.latest();
+        const id = generateUniqueId();
 
         let ong = {
             name: "ong-test",
@@ -24,7 +23,7 @@ describe('ONGs', () => {
 
         let { name, email, whatsapp, city, uf } = ong;
 
-        connection('ong').insert({
+        await connection('ong').insert({
             id,
             name,
             email,
@@ -34,9 +33,8 @@ describe('ONGs', () => {
         });
     });
 
-    after(async () => {
-        await connection('ong').where('id', id).delete();
-        console.log('Deleting test instances');
+    afterEach(async () => {
+        await connection.migrate.rollback();
     });
 
     describe('List ONGs', () => {

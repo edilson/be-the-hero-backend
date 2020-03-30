@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "nodemon server.js",
-    "test": "cross-env NODE_ENV=test mocha --timeout 1500"
+    "test": "cross-env NODE_ENV=test mocha --exit"
   },
   "keywords": [],
   "author": "",
