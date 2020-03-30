@@ -69,6 +69,16 @@ describe('Incidents', () => {
                         });
                 });
         });
+
+        it('Test page query params must be a number', (done) => {
+            chai.request('http://localhost:3333')
+                .get('/incidents?page=a')
+                .end((request, response) => {
+                    expect(response.status).to.equal(400);
+                    expect(response.body.message).to.equal("\"page\" must be a number");
+                    done();
+                });
+        });
     });
 
     describe('Create incident', () => {
@@ -86,6 +96,33 @@ describe('Incidents', () => {
                             expect(response.body).to.be.a('object');
                             done();
                         });
+                });
+        });
+
+        it('Test creating incident with invalid data', (done) => {
+            let incident_error = {
+                "title": "it",
+                "description": "some desc",
+                "value": "ab"
+            }
+
+            chai.request('http://localhost:3333')
+                .post('/incidents')
+                .send(incident_error)
+                .end((request, response) => {
+                    expect(response.status).to.equal(400);
+                    done();
+                });
+        });
+
+        it('Test creating incident with no id provided', (done) => {
+            chai.request('http://localhost:3333')
+                .post('/incidents')
+                .send(incident_post)
+                .end((request, response) => {
+                    expect(response.status).to.equal(400);
+                    expect(response.body.message).to.equal("\"authorization\" is required");
+                    done();
                 });
         });
     });

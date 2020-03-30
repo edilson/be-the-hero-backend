@@ -72,5 +72,23 @@ describe('ONGs', () => {
                     done();
                 });
         });
+
+        it('Test create ong with invalid data', (done) => {
+            let ong_error = {
+                name: "ong-test-2",
+                email: "test2test.com",
+                whatsapp: "839983059",
+                city: "João Pessoa",
+                uf: "PBE"
+            };
+
+            chai.request('http://localhost:3333')
+                .post('/ongs')
+                .send(ong_error)
+                .end((request, response) => {
+                    expect(response.status).to.equal(400);
+                    done();
+                });
+        });
     });
 });
