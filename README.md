@@ -39,7 +39,7 @@ To run this project locally follow these steps:
     http://localhost:3333
 ```
 
-5 - Run tests:
+6 - Run tests:
 ```
     npm test
 ```
