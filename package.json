@@ -7,7 +7,7 @@
     "dev": "nodemon server.js",
     "start": "node server.js",
     "test": "cross-env NODE_ENV=test mocha --exit",
-    "heroku-postbuild": "sh ./bin/post_build.sh"
+    "heroku-postbuild": "heroku run npx knex migrate:latest"
   },
   "keywords": [],
   "author": "Edilson Silva",
