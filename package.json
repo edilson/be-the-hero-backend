@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "nodemon server.js",
     "start": "node server.js",
-    "test": "cross-env NODE_ENV=test mocha --exit"
+    "test": "cross-env NODE_ENV=test mocha --exit",
+    "heroku-postbuild": "sh ./bin/post_build"
   },
   "keywords": [],
   "author": "Edilson Silva",
