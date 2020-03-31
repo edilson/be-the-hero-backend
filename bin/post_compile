@@ -2,6 +2,6 @@
 
 if [ -n "$AUTO_MIGRATE" ] && [ "$AUTO_MIGRATE" == 1 ]; then
     echo "-----> Running migrations"
-    knex migrate:latest
+    npx knex migrate:latest
     echo "-----> Migrations made successfully"
 fi
