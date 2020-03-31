@@ -2,7 +2,7 @@
   "name": "be-the-hero-backend-node",
   "description": "Backend of Be The Hero App",
   "scripts": {
-    "postdeploy": "npx knex migrate:latest"
+    "postdeploy": "knex migrate:latest"
   },
   "env": {
     "AUTO_MIGRATE": {

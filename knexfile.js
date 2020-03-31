@@ -48,7 +48,7 @@ module.exports = {
       max: 10
     },
     migrations: {
-      directory: '/app/migrations'
+      directory: './src/database/migrations'
     }
   }
 };
