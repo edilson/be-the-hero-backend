@@ -1,5 +1,8 @@
 # Be The Hero Backend
 
+[![CircleCI](https://circleci.com/gh/SEdilson/be-the-hero-backend/tree/master.svg?style=svg)](https://circleci.com/gh/SEdilson/be-the-hero-backend/tree/master)
+
+
 This is the backend of the project made at the Omnistack 11 week.
 
 ## Stack
