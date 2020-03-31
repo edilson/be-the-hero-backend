@@ -4,7 +4,7 @@ This is the backend of the project made at the Omnistack 11 week.
 
 ## Stack
 
-This project uses:  
+This project uses:
 
 - [NodeJS](https://nodejs.org)
 - [Express](https://expressjs.com)
@@ -12,34 +12,34 @@ This project uses:
 
 ## Running locally
 
-To run this project locally follow these steps:  
+To run this project locally follow these steps:
 
-1 - Download or clone this repo:  
+1 - Download or clone this repo:
 ```
     git clone https://github.com/SEdilson/be-the-hero-backend.git
 ```
 
-2 - Install the dependencies:  
+2 - Install the dependencies:
 ```
     npm install
 ```
 
-3 - Run the migrations:  
+3 - Run the migrations:
 ```
     npx knex migrate:latest
 ```
 
-4 - Run the app:  
+4 - Run the app:
 ```
-    npm start
+    npm run dev
 ```
 
-5 - Go to:  
+5 - Go to:
 ```
     http://localhost:3333
 ```
 
-5 - Run tests:  
+5 - Run tests:
 ```
     npm test
 ```
