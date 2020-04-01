@@ -33,14 +33,14 @@ routes.get('/incidents', celebrate({
     })
 }), IncidentController.list);
 routes.post('/incidents', celebrate({
+    [Segments.HEADERS]: Joi.object({
+        authorization: Joi.string().required(),
+    }).unknown(),
     [Segments.BODY]: Joi.object({
         title: Joi.string().required().min(5),
         description: Joi.string().required().min(10),
         value: Joi.number().required()
-    }),
-    [Segments.HEADERS]: Joi.object({
-        authorization: Joi.string().required(),
-    }).unknown()
+    })
 }), IncidentController.create);
 routes.delete('/incidents/:id', celebrate({
     [Segments.PARAMS]: Joi.object().keys({

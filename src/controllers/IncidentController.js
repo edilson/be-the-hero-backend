@@ -1,4 +1,4 @@
-const connection = require('../database/connection')
+const connection = require('../database/connection');
 
 module.exports = {
     async list(request, response) {
@@ -10,8 +10,8 @@ module.exports = {
                                     .join('ong', 'ong.id', '=', 'incident.ong_id')
                                     .limit(5)
                                     .offset((page - 1) * 5)
-                                    .select(['incident.*', 
-                                            'ong.name', 
+                                    .select(['incident.*',
+                                            'ong.name',
                                             'ong.email',
                                             'ong.whatsapp',
                                             'ong.city',
@@ -46,7 +46,7 @@ module.exports = {
                                     .first();
 
         if(incident.ong_id != ong_id) {
-            return response.status(401).json({ error: 'Unallowed operation'})
+            return response.status(401).json({ error: 'Unallowed operation'});
         }
 
         await connection('incident').where('id', id).delete();
