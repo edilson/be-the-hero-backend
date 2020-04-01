@@ -4,7 +4,7 @@
   "description": "Be The Hero backend",
   "main": "server.js",
   "scripts": {
-    "dev": "nodemon server.js",
+    "dev": "cross-env NODE_ENV=development nodemon server.js",
     "start": "node server.js",
     "test": "cross-env NODE_ENV=test mocha --exit",
     "heroku-postbuild": "npx knex migrate:latest"

@@ -5,10 +5,10 @@ let config;
 
 if(process.env.NODE_ENV === 'test') {
   config = configuration.test;
-} else if(process.env.NODE_ENV === 'development') {
-  config = configuration.development;
-} else {
+} else if(process.env.NODE_ENV === 'production') {
   config = configuration.production;
+} else {
+  config = configuration.development;
 }
 
 const connection = knex(config);
