@@ -1,5 +1,8 @@
 # Be The Hero Backend
 
+[![CircleCI](https://circleci.com/gh/SEdilson/be-the-hero-backend/tree/master.svg?style=svg)](https://circleci.com/gh/SEdilson/be-the-hero-backend/tree/master)
+
+
 This is the backend of the project made at the Omnistack 11 week.
 
 ## Stack
@@ -39,7 +42,7 @@ To run this project locally follow these steps:
     http://localhost:3333
 ```
 
-5 - Run tests:
+6 - Run tests:
 ```
     npm test
 ```
