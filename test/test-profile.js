@@ -10,69 +10,70 @@ const generateUniqueId = require('../src/utils/generateUniqueId');
 chai.use(chaiHttp);
 
 describe('Profile', () => {
+  beforeEach(async () => {
+    await connection.migrate.latest();
+    const id = generateUniqueId();
 
-    beforeEach(async () => {
-        await connection.migrate.latest();
-        const id = generateUniqueId();
+    let ong = {
+      name: 'ong-test',
+      email: 'test@test.com',
+      whatsapp: '81999340981',
+      city: 'Recife',
+      uf: 'PE',
+    };
 
-        let ong = {
-            name: "ong-test",
-            email: "test@test.com",
-            whatsapp: "81999340981",
-            city: "Recife",
-            uf: "PE"
-        };
+    let { name, email, whatsapp, city, uf } = ong;
 
-        let { name, email, whatsapp, city, uf } = ong;
-
-        await connection('ong').insert({
-            id,
-            name,
-            email,
-            whatsapp,
-            city,
-            uf
-        });
-
-        let incident = {
-            title: "test-title",
-            description: "some description",
-            value: 120,
-            ong_id: id
-        }
-
-        let { title, description, value, ong_id } = incident;
-
-        await connection('incident').insert({
-            title,
-            description,
-            value,
-            ong_id
-        });
+    await connection('ong').insert({
+      id,
+      name,
+      email,
+      whatsapp,
+      city,
+      uf,
     });
 
-    afterEach(async () => {
-        await connection.migrate.rollback();
+    let incident = {
+      title: 'test-title',
+      description: 'some description',
+      value: 120,
+      ong_id: id,
+    };
+
+    let { title, description, value, ong_id } = incident;
+
+    await connection('incident').insert({
+      title,
+      description,
+      value,
+      ong_id,
     });
+  });
 
-    describe('List profile', () => {
-        it('Testing list profile', (done) => {
-            let retrievedOngId;
+  afterEach(async () => {
+    await connection.migrate.rollback();
+  });
 
-            chai.request('http://localhost:3333')
-                .get('/ongs')
-                .end((request, response) => {
-                    retrievedOngId = response.body[0].id;
-                    chai.request('http://localhost:3333')
-                        .get('/profile')
-                        .set('Authorization', retrievedOngId)
-                        .end((request, response) => {
-                            expect(response.status).to.equal(200);
-                            expect(response.body).to.be.a('array');
-                            expect(response.body[0].ong_id).to.equal(retrievedOngId)
-                            done();
-                        });
-                });
+  describe('List profile', () => {
+    it('Testing list profile', (done) => {
+      let retrievedOngId;
+
+      chai
+        .request('http://localhost:3333')
+        .get('/ongs')
+        .end((request, response) => {
+          retrievedOngId = response.body[0].id;
+          chai
+            .request('http://localhost:3333')
+            .get('/profile')
+            .set('Authorization', retrievedOngId)
+            .end((request, response) => {
+              expect(response.status).to.equal(200);
+              expect(response.body).to.be.a('array');
+              expect(response.body[0].ong_id).to.equal(retrievedOngId);
+              done();
+            });
         });
     });
+  });
 });
